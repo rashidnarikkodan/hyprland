@@ -46,6 +46,7 @@ set_wallpaper() {
     if pgrep -x "hyprpaper" > /dev/null; then
         hyprctl hyprpaper preload "$WP"
         hyprctl hyprpaper wallpaper "eDP-1,$WP"
+        hyprctl hyprpaper wallpaper "HDMI-A-2,$WP"
     else
         update_config
         hyprpaper &
@@ -103,6 +104,7 @@ start_hyprpaper() {
     if [ -n "$CURRENT_WP" ] && [ -f "$CURRENT_WP" ]; then
         hyprctl hyprpaper preload "$CURRENT_WP" > /dev/null 2>&1
         hyprctl hyprpaper wallpaper "eDP-1,$CURRENT_WP" > /dev/null 2>&1
+        hyprctl hyprpaper wallpaper "HDMI-A-2,$CURRENT_WP" > /dev/null 2>&1
     fi
 }
 
