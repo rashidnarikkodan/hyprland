@@ -1,5 +1,0 @@
-# ── Workspace Rules ───────────────────────────────────────────
-workspace = w[tv1], gapsout:0, gapsin:0, border:false
-workspace = f[1],   gapsout:0, gapsin:0, border:false
-workspace = special:dev_scratch, on-created-empty:uwsm app -- kitty
-workspace = special:magic, on-created-empty:uwsm app -- $terminal
