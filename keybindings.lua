@@ -117,3 +117,4 @@ end
 -- Screen Shot Bindings
 hw_bind("PRINT","hyprshot -m output")
 bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
+bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window"))
