@@ -113,3 +113,7 @@ for key, action in pairs({
 }) do
     hw_bind(key, "playerctl " .. action)
 end
+
+-- Screen Shot Bindings
+hw_bind("PRINT","hyprshot -m output")
+bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
