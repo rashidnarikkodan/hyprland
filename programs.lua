@@ -4,6 +4,7 @@ local programs = {
     fileManager = "nautilus",
     menu = "hyprlauncher",
     browser = "helium-browser",
+    super = 'SUPER'
 }
 
 return programs
