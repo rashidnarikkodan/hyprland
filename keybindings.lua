@@ -56,14 +56,36 @@ for _, dir in ipairs({ "left", "right", "up", "down" }) do
     bind(dir, hl.dsp.focus({ direction = dir }))
 end
 
-for i = 1, 10 do
-    local key = i % 10
-    bind(tostring(key),     hl.dsp.focus({ workspace = i }))
-    bind("SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+local function get_target_workspace(num)
+    local slot = (num == 0) and 10 or num
+    local mon = hl.get_active_monitor()
+    if mon and mon.name == "HDMI-A-2" then
+        return 10 + slot
+    end
+    return slot
 end
 
-bind("S",         hl.dsp.workspace.toggle_special("magic"))
-bind("SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+for i = 1, 10 do
+    local key = i % 10
+    bind(tostring(key), function()
+        local target = get_target_workspace(key)
+        hl.dispatch(hl.dsp.focus({ workspace = target }))
+    end)
+    bind("SHIFT + " .. key, function()
+        local target = get_target_workspace(key)
+        hl.dispatch(hl.dsp.window.move({ workspace = target }))
+    end)
+end
+
+-- Special Workspaces & Scratchpads
+bind("Grave",         hl.dsp.workspace.toggle_special("dev_scratch"))
+bind("SHIFT + Grave", hl.dsp.window.move({ workspace = "special:dev_scratch" }))
+bind("S",             hl.dsp.workspace.toggle_special("magic"))
+bind("SHIFT + S",     hl.dsp.window.move({ workspace = "special:magic" }))
+
+-- Workspace Cycling
+bind("Tab",           hl.dsp.focus({ workspace = "e+1" }))
+bind("SHIFT + Tab",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- ── Mouse Controls ────────────────────────────────────────────
 bind("mouse_down", hl.dsp.focus({ workspace = "e+1" }))
