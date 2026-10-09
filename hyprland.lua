@@ -3,6 +3,7 @@
 -- Split the original monolithic config into focused modules.
 
 require("monitors")
+require("autostart")
 require("programs")
 require("environment")
 require("appearance")

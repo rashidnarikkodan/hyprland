@@ -1,6 +1,6 @@
 -- Application shortcuts used by the rest of the config
 local programs = {
-    terminal = "kitty",
+    terminal = "foot",
     fileManager = "nautilus",
     menu = "hyprlauncher",
     browser = "helium-browser",
