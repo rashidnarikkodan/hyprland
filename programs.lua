@@ -2,7 +2,7 @@
 local programs = {
     terminal = "foot",
     fileManager = "nautilus",
-    menu = "hyprlauncher",
+    menu = "fuzzel",
     browser = "helium-browser",
     super = 'SUPER'
 }

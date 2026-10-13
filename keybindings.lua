@@ -45,11 +45,11 @@ bind("SHIFT + P", hl.dsp.window.pseudo())
 bind("Q",         hl.dsp.window.close())
 
 -- Core Applications 
-bind("SPACE",         app(programs.menu))
+bind("SPACE",         app("pgrep -x " .. programs.menu .. " && pkill -x " .. programs.menu .. " || " .. programs.menu))
 bind("SHIFT + SPACE", app("pgrep -x waybar && pkill -USR1 waybar || waybar"))
 bind("B",             app(programs.browser))
 bind("RETURN",        app(programs.terminal))
-bind("F",             app(programs.fileManager))
+bind("F",             app(programs.fileManager .. ' --new-window'))
 
 -- ── Navigation & Workspaces ───────────────────────────────────
 for _, dir in ipairs({ "left", "right", "up", "down" }) do
@@ -100,10 +100,10 @@ end
 
 hw_bind("XF86AudioRaiseVolume",  "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+", true)
 hw_bind("XF86AudioLowerVolume",  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",      true)
-hw_bind("XF86AudioMute",         "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",     true)
-hw_bind("XF86AudioMicMute",      "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",   true)
-hw_bind("XF86MonBrightnessUp",   "brightnessctl -e4 -n2 set 5%+",                  true)
-hw_bind("XF86MonBrightnessDown", "brightnessctl -e4 -n2 set 5%-",                  true)
+hw_bind("XF86AudioMute",         "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",     false)
+hw_bind("XF86AudioMicMute",      "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",   false)
+hw_bind("XF86MonBrightnessUp",   "brightnessctl -e4 -n2 set 10%+",                  true)
+hw_bind("XF86MonBrightnessDown", "brightnessctl -e4 -n2 set 10%-",                  true)
 
 for key, action in pairs({
     XF86AudioNext  = "next",
@@ -118,3 +118,7 @@ end
 hw_bind("PRINT","hyprshot -m output")
 bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
 bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window"))
+
+-- Wallpaper Controller
+bind("SHIFT + code:21", hl.dsp.exec_cmd('wallpapercli next'))
+bind("SHIFT + MINUS", hl.dsp.exec_cmd('wallpapercli prev'))

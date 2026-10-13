@@ -1,40 +1,48 @@
 -- Visual appearance, animations, layout, and miscellaneous Hyprland behavior
+local ok, colors = pcall(require, "colors")
+if not ok or type(colors) ~= "table" then
+    colors = {
+        active_border   = "rgba(ffb3b5ee)",
+        inactive_border = "rgba(595959aa)",
+    }
+end
+
 hl.config({
     general = {
         gaps_in  = 1,
-        gaps_out = 1,
+        gaps_out = 2,
 
-        border_size = 1,
+        border_size = 2,
 
         col = {
-            active_border   = "rgba(33ccffee)",
-            inactive_border = "rgba(595959aa)",
+            active_border   = colors.active_border,
+            inactive_border = colors.inactive_border,
         },
 
-        resize_on_border = false,
+        resize_on_border = true,
         allow_tearing = false,
         layout = "dwindle",
     },
 
     decoration = {
-        rounding       = 4,
+        rounding       = 8,
         rounding_power = 2,
 
-        active_opacity   = 0.97,
-        inactive_opacity = 0.95,
+        active_opacity   = 0.98,
+        inactive_opacity = 0.92,
 
         shadow = {
             enabled      = false,
-            range        = 4,
+            range        = 14,
             render_power = 3,
-            color        = 0xee1a1a1a,
+            color        = colors.shadow_color or 0x66000000,
         },
 
         blur = {
             enabled   = true,
-            size      = 3,
-            passes    = 1,
-            vibrancy  = 0.1696,
+            size      = 6,
+            passes    = 2,
+            vibrancy  = 0.2,
         },
     },
 
