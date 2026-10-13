@@ -26,9 +26,7 @@ local webapps = {
     ["W"]         = "https://web.whatsapp.com",
     ["K"]         = "https://claude.ai/",
     ["G"]         = "https://gemini.google.com/",
-    ["U"]         = "https://www.perplexity.ai/",
     ["SHIFT + G"] = "https://github.com/rashidnarikkodan",
-    ["SHIFT + H"] = "https://hoppscotch.io",
     ["SHIFT + D"] = "https://discord.com/channels/@me",
     ["SHIFT + L"] = "https://linkedin.com/in/rashidnarikkodan",
 }
