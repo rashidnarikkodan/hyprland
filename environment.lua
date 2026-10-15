@@ -1,6 +1,6 @@
 -- Environment variables and permission hints
-hl.env("XCURSOR_SIZE", "20")
-hl.env("HYPRCURSOR_SIZE", "20")
+hl.env("XCURSOR_SIZE", "10")
+hl.env("HYPRCURSOR_SIZE", "10")
 
 -- Permission changes require a Hyprland restart and are not applied on-the-fly.
 -- hl.config({

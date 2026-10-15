@@ -43,7 +43,7 @@ bind("SHIFT + P", hl.dsp.window.pseudo())
 bind("Q",         hl.dsp.window.close())
 
 -- Core Applications 
-bind("SPACE",         app("pgrep -x " .. programs.menu .. " && pkill -x " .. programs.menu .. " || " .. programs.menu))
+bind("SPACE",         app("pkill -x " .. programs.menu .. " || " .. programs.menu))
 bind("SHIFT + SPACE", app("pgrep -x waybar && pkill -USR1 waybar || waybar"))
 bind("B",             app(programs.browser))
 bind("RETURN",        app(programs.terminal))
@@ -82,8 +82,11 @@ bind("S",             hl.dsp.workspace.toggle_special("magic"))
 bind("SHIFT + S",     hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Workspace Cycling
-bind("Tab",           hl.dsp.focus({ workspace = "e+1" }))
-bind("SHIFT + Tab",   hl.dsp.focus({ workspace = "e-1" }))
+bind("SHIFT + left",  hl.dsp.focus({ workspace = "r-1" }))  
+bind("SHIFT + right", hl.dsp.focus({ workspace = "r+1" }))
+bind("Z",  hl.dsp.focus({ workspace = "r-1" }))  
+bind("X", hl.dsp.focus({ workspace = "r+1" }))
+
 
 -- ── Mouse Controls ────────────────────────────────────────────
 bind("mouse_down", hl.dsp.focus({ workspace = "e+1" }))
