@@ -4,6 +4,8 @@ hl.monitor({
     mode     = "preferred",
     position = "0x768",
     scale    = "1",
+    icc      = "/home/rashidnarikkodan/.local/share/icc/N140HCA-EAB.icm",
+    sdrsaturation = 1.04,
 })
 
 hl.monitor({

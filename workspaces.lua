@@ -35,12 +35,8 @@ hl.workspace_rule({
 })
 
 -- ── Special Scratchpad Workspaces ──────────────────────────────
-hl.workspace_rule({
-    workspace        = "special:dev_scratch",
-    on_created_empty = programs.terminal,
-})
-
-hl.workspace_rule({
-    workspace        = "special:magic",
-    on_created_empty = programs.terminal,
-})
+hl.on("workspace.created", function(ws)
+    if ws.is_empty and (ws.name == "special:dev_scratch" or ws.name == "special:magic") then
+        hl.exec_cmd(programs.terminal)
+    end
+end)

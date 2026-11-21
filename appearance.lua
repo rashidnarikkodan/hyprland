@@ -9,8 +9,8 @@ end
 
 hl.config({
     general = {
-        gaps_in  = 1,
-        gaps_out = 2,
+        gaps_in  = 2,
+        gaps_out = 4,
 
         border_size = 2,
 
@@ -25,7 +25,7 @@ hl.config({
     },
 
     decoration = {
-        rounding       = 8,
+        rounding       = 10,
         rounding_power = 2,
 
         active_opacity   = 0.98,
@@ -97,7 +97,8 @@ hl.config({
 
 hl.config({
     misc = {
-        force_default_wallpaper = -1,
-        disable_hyprland_logo   = false,
+        force_default_wallpaper = 0,
+        disable_hyprland_logo   = true,
+        disable_splash_rendering = true,
     },
 })

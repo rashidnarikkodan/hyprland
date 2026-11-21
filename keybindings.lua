@@ -22,11 +22,13 @@ local webapps = {
     ["P"]         = "https://student.brototype.com",
     ["R"]         = "https://grok.com",
     ["D"]         = "https://chat.deepseek.com",
-    ["Y"]         = "https://www.youtube.com/",
+    ["Y"]         = "https://www.youtube.com/feed/subscriptions",
     ["W"]         = "https://web.whatsapp.com",
+    ["T"]         = "https://web.telegram.org",
     ["K"]         = "https://claude.ai/",
-    ["G"]         = "https://gemini.google.com/",
-    ["SHIFT + G"] = "https://github.com/rashidnarikkodan",
+    ["G"]         = "https://github.com/rashidnarikkodan?tab=repositories",
+    ["SHIFT + G"] = "https://gemini.google.com/",
+    ["SHIFT + C"] = "https://chatgpt.com/?temporary-chat=true",
     ["SHIFT + D"] = "https://discord.com/channels/@me",
     ["SHIFT + L"] = "https://linkedin.com/in/rashidnarikkodan",
 }
@@ -48,6 +50,7 @@ bind("SHIFT + SPACE", app("pgrep -x waybar && pkill -USR1 waybar || waybar"))
 bind("B",             app(programs.browser))
 bind("RETURN",        app(programs.terminal))
 bind("F",             app(programs.fileManager .. ' --new-window'))
+bind("TAB",           app(os.getenv("HOME") .. "/.config/hypr/scripts/hyprexpose.sh toggle"))
 
 -- ── Navigation & Workspaces ───────────────────────────────────
 for _, dir in ipairs({ "left", "right", "up", "down" }) do
@@ -82,11 +85,90 @@ bind("S",             hl.dsp.workspace.toggle_special("magic"))
 bind("SHIFT + S",     hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Workspace Cycling
-bind("SHIFT + left",  hl.dsp.focus({ workspace = "r-1" }))  
-bind("SHIFT + right", hl.dsp.focus({ workspace = "r+1" }))
-bind("Z",  hl.dsp.focus({ workspace = "r-1" }))  
-bind("X", hl.dsp.focus({ workspace = "r+1" }))
+bind("ALT + left",  hl.dsp.focus({ workspace = "r-1" }))  
+bind("ALT + right", hl.dsp.focus({ workspace = "r+1" }))
 
+-- ── Active Window Cycling (Current Monitor) ───────────────────
+local function navigate_active_window(direction)
+    local mon = hl.get_active_monitor()
+    if not mon then return end
+
+    local wins = hl.get_windows()
+    local mon_wins = {}
+    local special_ws = hl.get_active_special_workspace()
+
+    for _, w in ipairs(wins) do
+        local is_current_mon = (w.monitor and (w.monitor.id == mon.id or w.monitor.name == mon.name))
+        local is_valid_ws = (w.workspace and w.workspace.id > 0)
+            or (special_ws and w.workspace and w.workspace.id == special_ws.id)
+        if is_current_mon and is_valid_ws then
+            table.insert(mon_wins, w)
+        end
+    end
+
+    if #mon_wins == 0 then return end
+
+    table.sort(mon_wins, function(a, b)
+        if a.workspace.id ~= b.workspace.id then
+            return a.workspace.id < b.workspace.id
+        end
+        if a.at and b.at and a.at.x ~= b.at.x then
+            return a.at.x < b.at.x
+        end
+        if a.at and b.at and a.at.y ~= b.at.y then
+            return a.at.y < b.at.y
+        end
+        return tostring(a.address) < tostring(b.address)
+    end)
+
+    local active = hl.get_active_window()
+    local cur_idx = nil
+    if active then
+        for i, w in ipairs(mon_wins) do
+            if w.address == active.address then
+                cur_idx = i
+                break
+            end
+        end
+    end
+
+    local next_idx
+    if not cur_idx then
+        local cur_ws = hl.get_active_workspace()
+        local cur_ws_id = cur_ws and cur_ws.id or 0
+        if direction == "prev" then
+            local target_idx = nil
+            for i = #mon_wins, 1, -1 do
+                if mon_wins[i].workspace.id < cur_ws_id then
+                    target_idx = i
+                    break
+                end
+            end
+            next_idx = target_idx or #mon_wins
+        else
+            local target_idx = nil
+            for i = 1, #mon_wins do
+                if mon_wins[i].workspace.id > cur_ws_id then
+                    target_idx = i
+                    break
+                end
+            end
+            next_idx = target_idx or 1
+        end
+    elseif direction == "prev" then
+        next_idx = (cur_idx == 1) and #mon_wins or (cur_idx - 1)
+    else
+        next_idx = (cur_idx == #mon_wins) and 1 or (cur_idx + 1)
+    end
+
+    local target = mon_wins[next_idx]
+    if target then
+        hl.dispatch(hl.dsp.focus({ window = "address:" .. target.address }))
+    end
+end
+
+bind("SHIFT + left",  function() navigate_active_window("prev") end)
+bind("SHIFT + right", function() navigate_active_window("next") end)
 
 -- ── Mouse Controls ────────────────────────────────────────────
 bind("mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -116,10 +198,11 @@ for key, action in pairs({
 end
 
 -- Screen Shot Bindings
-hw_bind("PRINT","hyprshot -m output")
-bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
-bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window"))
+hw_bind("PRINT","hyprshot -m output -o ~/Pictures/Screenshots")
+bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region -o ~/Pictures/Screenshots"))
+bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m window -o ~/Pictures/Screenshots"))
 
 -- Wallpaper Controller
+bind("SHIFT + W", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/wallpaper-picker"))
 bind("SHIFT + code:21", hl.dsp.exec_cmd('wallpapercli next'))
 bind("SHIFT + MINUS", hl.dsp.exec_cmd('wallpapercli prev'))

@@ -17,10 +17,35 @@ hl.config({
     },
 })
 
+local scripts_dir = (os.getenv("HOME") or "") .. "/.config/hypr/scripts"
+
+-- Workspace swipe
 hl.gesture({
     fingers = 3,
     direction = "horizontal",
     action = "workspace",
+})
+
+-- 3-finger swipe up: open workspaces overview immediately on gesture start
+hl.gesture({
+    fingers = 3,
+    direction = "up",
+    action = {
+        start = function()
+            hl.exec_cmd(scripts_dir .. "/hyprexpose.sh open")
+        end,
+    },
+})
+
+-- 3-finger swipe down: dismiss workspaces overview immediately on gesture start
+hl.gesture({
+    fingers = 3,
+    direction = "down",
+    action = {
+        start = function()
+            hl.exec_cmd(scripts_dir .. "/hyprexpose.sh close")
+        end,
+    },
 })
 
 hl.device({
